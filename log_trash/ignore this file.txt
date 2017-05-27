@@ -1,0 +1,1 @@
+This file is just here so that the log_trash folder will commit.
