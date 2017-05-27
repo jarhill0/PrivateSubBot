@@ -62,6 +62,7 @@ def main():
     stats['last_full_run'] = time.time()
     helpers.write_data('stats', stats)
     helpers.write_data('user_list', updated_list_copy)
+    helpers.write_data('participated', [])
 
 
 def add_users(users, reddit):
