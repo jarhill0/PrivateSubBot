@@ -35,7 +35,6 @@ def get_participants(reddit, last_check):
         else:
             old_comments = True
 
-
     if not old_comments:
         raise Exception('Not all old comments were retrieved.')
 

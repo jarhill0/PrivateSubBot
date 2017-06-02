@@ -94,7 +94,7 @@ def build_new_text(new_users, starting_index):
 def build_removed_text(user_list, removed):
     text = '# Users removed\n\n'
     for user in removed:
-        text += '- #%d /u/%s\n' % (user_list.index(user), user)
+        text += '- #%d /u/%s\n' % (user_list.index(user) + 1, user)
     return text
 
 
