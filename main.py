@@ -1,6 +1,6 @@
 import time
 
-import prawcore
+import praw
 
 import config
 import daily
@@ -107,7 +107,7 @@ def flair_and_remove(users, reddit):
                     text='Removed',
                     css_class='kicked')
                 reddit.subreddit(config.target_subreddit).contributor.remove(user)
-            except prawcore.exceptions.BadRequest:
+            except praw.exceptions.APIException:
                 # Deleted user, most likely
                 pass
         else:
@@ -119,10 +119,14 @@ def flair_users(users, reddit, default_flair_class, number_adjustment=0):
         i += 1 + number_adjustment
         flair_class = config.special_flairs.get(i, default_flair_class)
         if not config.testing:
-            reddit.subreddit(config.target_subreddit).flair.set(
-                redditor=name,
-                text='#%d' % i,
-                css_class=flair_class)
+            try:
+                reddit.subreddit(config.target_subreddit).flair.set(
+                    redditor=name,
+                    text='#%d' % i,
+                    css_class=flair_class)
+            except praw.exceptions.APIException:
+                # Deleted user, most likely
+                pass
         else:
             print('Testing: Flaired %s as #%d (class "%s")' % (name, i, flair_class))
 
