@@ -11,17 +11,25 @@ def main():
         titles = json.load(f)
 
     wanna_clear = input('Would you like to clear all existing titles? [y/n] ')
-    if wanna_clear.lower()[0] == 'y':
-        if input('Are you sure? This will destroy all previous titles. [y/n] ').lower()[0] == 'y':
-            titles = []
-            print('All titles have been cleared.')
+    try:
+        if wanna_clear.lower()[0] == 'y':
+            if input('Are you sure? This will destroy all previous titles. [y/n] ').lower()[0] == 'y':
+                titles = []
+                print('All titles have been cleared.')
+    except IndexError:
+        # no input
+        pass
 
     another = 'y'
 
-    while another.lower()[0] == 'y':
-        new_title = input('Enter a title: ')
-        titles.append(new_title)
-        another = input('Add another? [y/n] ')
+    try:
+        while another.lower()[0] == 'y':
+            new_title = input('Enter a title: ')
+            titles.append(new_title)
+            another = input('Add another? [y/n] ')
+    except IndexError:
+        # no input for "another"
+        pass
 
     with open(titles_path, 'w') as f:
         json.dump(titles, f)
