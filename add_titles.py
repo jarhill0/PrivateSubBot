@@ -20,16 +20,12 @@ def main():
         # no input
         pass
 
-    another = 'y'
+    new_title = 'überSecretString'
 
-    try:
-        while another.lower()[0] == 'y':
-            new_title = input('Enter a title: ')
+    while new_title != '':
+        if new_title != 'überSecretString':
             titles.append(new_title)
-            another = input('Add another? [y/n] ')
-    except IndexError:
-        # no input for "another"
-        pass
+        new_title = input('Enter a title (leave blank to finish): ')
 
     with open(titles_path, 'w') as f:
         json.dump(titles, f)
