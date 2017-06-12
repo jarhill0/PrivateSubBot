@@ -44,9 +44,9 @@ def update_sidebar(user_list):
 if __name__ == '__main__':
     choice = input('Update what? T for title or S for sidebar [T/S]: ')
 
-    if choice.lower == 't':
+    if choice.lower() == 't':
         change_title()
-    elif choice.lower == 's':
+    elif choice.lower() == 's':
         update_sidebar(helpers.load_data('user_list'))
     else:
         print('Invalid choice. Exiting.')
