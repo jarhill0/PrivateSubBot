@@ -1,12 +1,8 @@
-import json
-import os
 import sys
 
 import config
 import helpers
 import main as daddy
-
-userlist_path = os.path.join(helpers.folder_path(), 'data', 'user_list.json')
 
 
 def main(user):
@@ -16,18 +12,15 @@ def main(user):
 
     daddy.add_users([user], reddit)
 
-    with open(userlist_path, 'r') as f:
-        users = json.load(f)
+    users = helpers.load_data('user_list')
 
     daddy.flair_users([user], reddit, config.flair_normal, number_adjustment=len(users))
 
 
 def insert_user_to_userlist(user):
-    with open(userlist_path, 'r') as f:
-        users = json.load(f)
+    users = helpers.load_data('user_list')
     users.append(user)
-    with open(userlist_path, 'w') as f:
-        json.dump(users, f)
+    helpers.write_data('user_list', users)
 
 
 def process_input():

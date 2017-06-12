@@ -1,5 +1,3 @@
-import json
-import os
 import sys
 
 import praw
@@ -10,12 +8,9 @@ import main
 
 
 def replace(old_un, new_un):
-    user_list_fp = os.path.join(helpers.folder_path(), 'data', 'user_list.json')
-    with open(user_list_fp, 'r') as f:
-        users = json.load(f)
+    users = helpers.load_data('user_list')
     users[users.index(old_un)] = new_un
-    with open(user_list_fp, 'w') as f:
-        json.dump(users, f)
+    helpers.write_data('user_list', users)
 
     reddit = helpers.initialize_reddit()
     if not config.testing:
