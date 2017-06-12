@@ -1,4 +1,5 @@
 import json
+import os
 import random
 
 import config
@@ -6,7 +7,8 @@ import helpers
 
 
 def change_title():
-    with open(config.titles_path) as f:
+    titles_path = os.path.join(helpers.folder_path(), config.titles_path[0], config.titles_path[1])
+    with open(titles_path) as f:
         titles = json.load(f)
 
     if not config.testing:
@@ -17,9 +19,11 @@ def change_title():
 
 
 def update_sidebar(user_list):
-    with open(config.sidebar_text_paths[0], 'r') as f:
+    path_1 = os.path.join(helpers.folder_path(), config.sidebar_text_paths[0][0], config.sidebar_text_paths[0][1])
+    path_2 = os.path.join(helpers.folder_path(), config.sidebar_text_paths[1][0], config.sidebar_text_paths[1][1])
+    with open(path_1, 'r') as f:
         sidebar_1 = f.read()
-    with open(config.sidebar_text_paths[1], 'r') as f:
+    with open(path_2, 'r') as f:
         sidebar_2 = f.read()
 
     sidebar = sidebar_1

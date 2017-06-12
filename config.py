@@ -50,11 +50,11 @@ special_flairs = {0: 'black',
 # in the second text file (by default, text_values/sidebar part 2.txt).
 update_sidebar = False
 # Tuple with two filepaths for the purposes described above. Only necessary if update_sidebar is True.
-sidebar_text_paths = ('text_values/sidebar part 1.txt', 'text_values/sidebar part 2.txt')
+sidebar_text_paths = (('text_values', 'sidebar part 1.txt'), ('text_values', 'sidebar part 2.txt'))
 
 #
 
 # Set to True to update the subreddit with a random title once a week.
 change_title = False
 # Path to a json list of titles. Only necessary if change_title is True.
-titles_path = 'text_values/titles.json'
+titles_path = ('text_values', 'titles.json')

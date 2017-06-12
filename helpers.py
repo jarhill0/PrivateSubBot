@@ -1,4 +1,5 @@
 import json
+import os
 import time
 
 import praw
@@ -15,16 +16,23 @@ def initialize_reddit():
 
 
 def load_data(name):
-    with open('data/%s.json' % name, 'r') as f:
+    filepath = os.path.join(folder_path(), 'data', '%s.json' % name)
+    with open(filepath, 'r') as f:
         output = json.load(f)
     return output
 
 
 def write_data(name, data):
-    with open('data/%s.json' % name, 'w') as f:
+    filepath = os.path.join(folder_path(), 'data', '%s.json' % name)
+    with open(filepath, 'w') as f:
         json.dump(data, f)
 
 
 def write_log_trash(name, data):
-    with open('log_trash/%s.json' % name, 'w') as f:
+    filepath = os.path.join(folder_path(), 'log_trash', '%s.json' % name)
+    with open(filepath, 'w') as f:
         json.dump(data, f)
+
+
+def folder_path():
+    return os.path.dirname(os.path.abspath(__file__))
