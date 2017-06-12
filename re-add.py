@@ -15,6 +15,22 @@ def main(user):
     users = helpers.load_data('user_list')
 
     daddy.flair_users([user], reddit, config.flair_normal, number_adjustment=len(users))
+    daddy.add_users([user], reddit)
+
+    title, body = build_post(user, len(users))
+    daddy.make_post(title, body, reddit)
+
+
+def build_post(user, number):
+    stats = helpers.load_data('stats')
+    stats['re-add count'] += 1
+    readd_count = ['re-add count']
+    helpers.write_data('stats', stats)
+
+    title = 'User re-add #d' % readd_count
+    body = '#%d — /u/%s' % (number, user)
+
+    return title, body
 
 
 def insert_user_to_userlist(user):
