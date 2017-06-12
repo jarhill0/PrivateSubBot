@@ -12,7 +12,7 @@ def main():
 
     wanna_clear = input('Would you like to clear all existing titles? [y/n] ')
     if wanna_clear.lower()[0] == 'y':
-        if input('Are you sure? This will destroy all previous titles. [y/n]').lower()[0] == 'y':
+        if input('Are you sure? This will destroy all previous titles. [y/n] ').lower()[0] == 'y':
             titles = []
             print('All titles have been cleared.')
 
@@ -21,7 +21,7 @@ def main():
     while another.lower()[0] == 'y':
         new_title = input('Enter a title: ')
         titles.append(new_title)
-        another = input('Add another? [y/n]')
+        another = input('Add another? [y/n] ')
 
     with open(titles_path, 'w') as f:
         json.dump(titles, f)
