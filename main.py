@@ -1,6 +1,7 @@
 import time
 
 import praw
+import prawcore
 
 import config
 import daily
@@ -168,6 +169,22 @@ def segregate_users(user_list, participated):
             not_participated.append(user)
 
     return new_list, not_participated
+
+
+def valid_user(username, reddit):
+    """Return 1 if user is shadowbanned and 2 if they are deleted; else 0"""
+    user = reddit.redditor(username)
+    try:
+        user.unblock()
+    except prawcore.exceptions.BadRequest:
+        return 2
+    else:
+        try:
+            user.fullname
+        except prawcore.exceptions.NotFound:
+            return 1
+        else:
+            return 0
 
 
 if __name__ == '__main__':
