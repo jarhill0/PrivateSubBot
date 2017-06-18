@@ -18,7 +18,7 @@ def main(user):
     daddy.add_users([user], reddit)
 
     title, body = build_post(user, len(users))
-    daddy.make_post(title, body, reddit)
+    daddy.make_post(title, body, reddit, distinguish=True, sticky=False)
 
 
 def build_post(user, number):

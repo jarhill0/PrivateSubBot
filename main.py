@@ -145,15 +145,15 @@ def get_new_users(reddit, number, current_users):
     return new_users, new_user_urls
 
 
-def make_post(title, text, reddit):
+def make_post(title, text, reddit, *, distinguish=config.distinguish_log, sticky=config.sticky_log):
     if not config.testing:
         new_post = reddit.subreddit(config.target_subreddit).submit(
             title,
             selftext=text,
             resubmit=False)
-        if config.distinguish_log:
+        if distinguish:
             reddit.submission(id=new_post.id).mod.distinguish(how='yes', sticky=True)
-        if config.sticky_log:
+        if sticky:
             reddit.submission(id=new_post.id).mod.sticky()
     else:
         print('Testing: submitted %s:\n\n%s' % (title, text))
