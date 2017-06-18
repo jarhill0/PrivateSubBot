@@ -27,8 +27,8 @@ def build_post(user, number):
     readd_count = ['re-add count']
     helpers.write_data('stats', stats)
 
-    title = 'User re-add #d' % readd_count
-    body = '#%d — /u/%s' % (number, user)
+    title = 'User re-add #%d' % readd_count
+    body = '\#%d — /u/%s' % (number, user)
 
     return title, body
 
