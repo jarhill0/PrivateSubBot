@@ -1,3 +1,4 @@
+import sys
 import time
 
 import praw
@@ -18,6 +19,13 @@ def main():
     stats = helpers.load_data('stats')
     user_list = helpers.load_data('user_list')
     helpers.write_log_trash('User list %s' % helpers.date_string(), user_list)
+
+    if stats['last_full_run'] + 23 * 60 * 60 > time.time():
+        if '--override_time' not in sys.argv:
+            msg = 'Less than 23 hours since last run. Exiting. Run with "--override_time" as an option to disregard'
+            print(msg)
+            helpers.write_log_trash('Failed %s' % helpers.date_string(), msg)
+            sys.exit(1)
 
     updated_list, not_participated = segregate_users(user_list, participated)
     helpers.write_log_trash('Not participated %s' % helpers.date_string(), not_participated)
