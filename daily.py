@@ -22,7 +22,11 @@ def get_participants(reddit, last_check):
     old_comments = False
 
     for submission in reddit.subreddit(config.target_subreddit).submissions(start=last_check, end=now):
-        participated.add(submission.author.name)
+        try:
+            participated.add(submission.author.name)
+        except AttributeError:
+            # More than likely a deleted user
+            pass
 
     for comment in reddit.subreddit(config.target_subreddit).comments(limit=1000):
 
