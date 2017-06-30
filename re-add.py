@@ -8,13 +8,13 @@ import main as daddy
 def main(user):
     reddit = helpers.initialize_reddit()
 
-    insert_user_to_userlist(user)
-
-    daddy.add_users([user], reddit)
-
     users = helpers.load_data('user_list')
 
+    daddy.add_users([user], reddit)
     daddy.flair_users([user], reddit, config.flair_normal, number_adjustment=len(users))
+
+    insert_user_to_userlist(user)
+    users = helpers.load_data('user_list')
 
     title, body = build_post(user, len(users))
     daddy.make_post(title, body, reddit, distinguish=True, sticky=False)
