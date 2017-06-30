@@ -22,13 +22,16 @@ def main(user):
 
 
 def build_post(user, number):
-    stats = helpers.load_data('stats')
-    stats['re-add count'] += 1
-    readd_count = ['re-add count']
-    helpers.write_data('stats', stats)
-
-    title = 'User re-add #%d' % readd_count
-    body = '\#%d — /u/%s' % (number, user)
+    title = 'User re-add'
+    if config.title_date:
+        title = helpers.date_string() + ' - ' + title
+    if config.title_number:
+        stats = helpers.load_data('stats')
+        stats['re-add count'] += 1
+        readd_count = ['re-add count']
+        helpers.write_data('stats', stats)
+        title += ' #%d' % readd_count
+    body = '- #%d /u/%s' % (number, user)
 
     return title, body
 
