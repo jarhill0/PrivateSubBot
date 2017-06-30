@@ -15,7 +15,6 @@ def main(user):
     users = helpers.load_data('user_list')
 
     daddy.flair_users([user], reddit, config.flair_normal, number_adjustment=len(users))
-    daddy.add_users([user], reddit)
 
     title, body = build_post(user, len(users))
     daddy.make_post(title, body, reddit, distinguish=True, sticky=False)
