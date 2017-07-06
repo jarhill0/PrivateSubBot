@@ -160,7 +160,7 @@ def make_post(title, text, reddit, *, distinguish=config.distinguish_log, sticky
             selftext=text,
             resubmit=False)
         if distinguish:
-            reddit.submission(id=new_post.id).mod.distinguish(how='yes', sticky=True)
+            reddit.submission(id=new_post.id).mod.distinguish(how='yes')
         if sticky:
             reddit.submission(id=new_post.id).mod.sticky()
     else:
