@@ -58,6 +58,9 @@ def main():
 
     make_post(title, post_text, reddit)
 
+    if config.change_title:
+        updates.change_title()
+
     add_users(new_users, reddit)
     flair_users(new_users, reddit, 'numbernew', number_adjustment=len(updated_list))
 
@@ -65,8 +68,6 @@ def main():
     updated_list_copy.extend(new_users)
     if config.update_sidebar:
         updates.update_sidebar(updated_list_copy)
-    if config.change_title:
-        updates.change_title()
 
     stats['last_full_run'] = time.time()
     helpers.write_data('stats', stats)
