@@ -159,7 +159,7 @@ def make_post(title, text, reddit, *, distinguish=config.distinguish_log, sticky
         new_post = reddit.subreddit(config.target_subreddit).submit(
             title,
             selftext=text,
-            resubmit=False)
+            send_replies=False)
         if distinguish:
             reddit.submission(id=new_post.id).mod.distinguish(how='yes')
         if sticky:
