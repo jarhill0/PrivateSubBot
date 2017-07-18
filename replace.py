@@ -1,6 +1,7 @@
 import sys
 
 import praw
+import prawcore
 
 import config
 import helpers
@@ -19,7 +20,7 @@ def replace(old_un, new_un):
                 redditor=old_un,
                 text='Moved to /u/%s' % new_un, )
             reddit.subreddit(config.target_subreddit).contributor.remove(old_un)
-        except praw.exceptions.APIException:
+        except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
             # Deleted user, most likely
             pass
         main.flair_users([new_un], reddit, config.flair_normal, number_adjustment=users.index(new_un))
