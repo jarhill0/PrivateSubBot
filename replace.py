@@ -6,6 +6,7 @@ import prawcore
 import config
 import helpers
 import main
+import updates
 
 
 def replace(old_un, new_un):
@@ -27,6 +28,8 @@ def replace(old_un, new_un):
         main.add_users([new_un], reddit)
     else:
         print('Flaired and removed /u/%s; Flaired and added /u/%s') % (old_un, new_un)
+
+    updates.update_sidebar(users)
 
 
 def process_input():
