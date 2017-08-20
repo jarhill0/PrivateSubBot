@@ -3,6 +3,7 @@ import sys
 import config
 import helpers
 import main as daddy
+import updates
 
 
 def main(user):
@@ -19,6 +20,8 @@ def main(user):
     title, body = build_post(user, len(users))
     daddy.make_post(title, body, reddit, distinguish=True, sticky=False)
 
+    updates.update_sidebar(users)
+
 
 def build_post(user, number):
     title = 'User re-add'
@@ -27,7 +30,7 @@ def build_post(user, number):
     if config.title_number:
         stats = helpers.load_data('stats')
         stats['re-add count'] += 1
-        readd_count = ['re-add count']
+        readd_count = stats['re-add count']
         helpers.write_data('stats', stats)
         title += ' #%d' % readd_count
     body = '- #%d /u/%s' % (number, user)
