@@ -17,7 +17,7 @@ testing = False
 
 #
 
-# List users in the format ['username', 'otherUSername'] to blacklist them from being selected and added. Set to []
+# List users in the format ['username', 'otherUsername'] to blacklist them from being selected and added. Set to []
 # to blacklist nobody
 redditor_blacklist = ['AutoModerator', 'ImagesOfNetwork']
 
