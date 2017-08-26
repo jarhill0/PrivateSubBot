@@ -29,7 +29,8 @@ def replace(old_un, new_un):
     else:
         print('Flaired and removed /u/%s; Flaired and added /u/%s') % (old_un, new_un)
 
-    updates.update_sidebar(users)
+    if config.update_sidebar:
+        updates.update_sidebar(users)
 
 
 def process_input():

@@ -20,7 +20,8 @@ def main(user):
     title, body = build_post(user, len(users))
     daddy.make_post(title, body, reddit, distinguish=True, sticky=False)
 
-    updates.update_sidebar(users)
+    if config.update_sidebar:
+        updates.update_sidebar(users)
 
 
 def build_post(user, number):
