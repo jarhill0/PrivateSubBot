@@ -148,7 +148,7 @@ def get_new_users(reddit, number, current_users):
     new_users = []
     new_user_urls = []
     for user in raw_new_users:
-        if len(new_users) < number and user[0] not in current_users:
+        if len(new_users) < number and user[0] not in current_users and user[0] not in config.redditor_blacklist:
             new_users.append(user[0])
             new_user_urls.append(user[1])
     return new_users, new_user_urls

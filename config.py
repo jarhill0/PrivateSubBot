@@ -17,6 +17,12 @@ testing = False
 
 #
 
+# List users in the format ['username', 'otherUSername'] to blacklist them from being selected and added. Set to []
+# to blacklist nobody
+redditor_blacklist = ['AutoModerator', 'ImagesOfNetwork']
+
+#
+
 # Unchanging portion of the log title
 main_log_title = 'Bot Recap'
 # Set to True to number threads sequentially. Relies on "log_count" in data/stats.json
