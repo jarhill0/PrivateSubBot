@@ -15,7 +15,7 @@ def change_title():
         reddit = helpers.initialize_reddit()
         reddit.subreddit(config.target_subreddit).mod.update(title=random.choice(titles))
     else:
-        print('Testing: updated title ("%s")' % random.choice(titles))
+        print('Testing: updated title ("{}")'.format(random.choice(titles)))
 
 
 def update_sidebar(user_list):
@@ -30,7 +30,7 @@ def update_sidebar(user_list):
     sidebar += 'Number | User\n---|---\n'
 
     for i, user in enumerate(user_list):
-        sidebar += '%s | /u/%s\n' % (i + 1, user)
+        sidebar += '{} | /u/{}\n'.format(i + 1, user)
 
     sidebar += sidebar_2
 
@@ -38,7 +38,8 @@ def update_sidebar(user_list):
         reddit = helpers.initialize_reddit()
         reddit.subreddit(config.target_subreddit).mod.update(description=sidebar)
     else:
-        print('Testing: description updated:\n\n%s' % sidebar)
+        print('Testing: description updated:\n')
+        print(sidebar)
 
 
 if __name__ == '__main__':

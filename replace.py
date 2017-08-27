@@ -19,7 +19,7 @@ def replace(old_un, new_un):
         try:
             reddit.subreddit(config.target_subreddit).flair.set(
                 redditor=old_un,
-                text='Moved to /u/%s' % new_un, )
+                text='Moved to /u/{}'.format(new_un))
             reddit.subreddit(config.target_subreddit).contributor.remove(old_un)
         except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
             # Deleted user, most likely
@@ -27,7 +27,7 @@ def replace(old_un, new_un):
         main.flair_users([new_un], reddit, config.flair_normal, number_adjustment=users.index(new_un))
         main.add_users([new_un], reddit)
     else:
-        print('Flaired and removed /u/%s; Flaired and added /u/%s') % (old_un, new_un)
+        print('Flaired and removed /u/{}; Flaired and added /u/{}'.format(old_un, new_un))
 
     if config.update_sidebar:
         updates.update_sidebar(users)

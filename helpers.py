@@ -16,20 +16,20 @@ def initialize_reddit():
 
 
 def load_data(name):
-    filepath = os.path.join(folder_path(), 'data', '%s.json' % name)
+    filepath = os.path.join(folder_path(), 'data', '{}.json'.format(name))
     with open(filepath, 'r') as f:
         output = json.load(f)
     return output
 
 
 def write_data(name, data):
-    filepath = os.path.join(folder_path(), 'data', '%s.json' % name)
+    filepath = os.path.join(folder_path(), 'data', '{}.json'.format(name))
     with open(filepath, 'w') as f:
         json.dump(data, f)
 
 
 def write_log_trash(name, data):
-    filepath = os.path.join(folder_path(), 'log_trash', '%s.json' % name)
+    filepath = os.path.join(folder_path(), 'log_trash', '{}.json'.format(name))
     with open(filepath, 'w') as f:
         json.dump(data, f)
 

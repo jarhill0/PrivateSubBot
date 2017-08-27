@@ -33,11 +33,11 @@ def build_post(new_users, number):
         stats['re-add count'] += 1
         readd_count = stats['re-add count']
         helpers.write_data('stats', stats)
-        title += ' #%d' % readd_count
+        title += ' #{}'.format(readd_count)
 
     lines = []
     for user in new_users:
-        lines.append('- #%d /u/%s' % (number, user))
+        lines.append('- #{} /u/{}'.format(number, user))
         number += 1
 
     body = '  /n'.join(lines)
