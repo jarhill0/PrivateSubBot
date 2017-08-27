@@ -6,25 +6,25 @@ import main as daddy
 import updates
 
 
-def main(user):
+def main(new_users):
     reddit = helpers.initialize_reddit()
 
-    users = helpers.load_data('user_list')
+    user_list = helpers.load_data('user_list')
 
-    daddy.add_users([user], reddit)
-    daddy.flair_users([user], reddit, config.flair_normal, number_adjustment=len(users))
+    daddy.add_users(new_users, reddit)
+    daddy.flair_users(new_users, reddit, config.flair_normal, number_adjustment=len(user_list))
 
-    insert_user_to_userlist(user)
-    users = helpers.load_data('user_list')
+    insert_users_to_userlist(new_users)
+    user_list = helpers.load_data('user_list')
 
-    title, body = build_post(user, len(users))
+    title, body = build_post(new_users, len(user_list) - len(new_users) + 1)
     daddy.make_post(title, body, reddit, distinguish=True, sticky=False)
 
     if config.update_sidebar:
-        updates.update_sidebar(users)
+        updates.update_sidebar(user_list)
 
 
-def build_post(user, number):
+def build_post(new_users, number):
     title = 'User re-add'
     if config.title_date:
         title = helpers.date_string() + ' - ' + title
@@ -34,24 +34,30 @@ def build_post(user, number):
         readd_count = stats['re-add count']
         helpers.write_data('stats', stats)
         title += ' #%d' % readd_count
-    body = '- #%d /u/%s' % (number, user)
+
+    lines = []
+    for user in new_users:
+        lines.append('- #%d /u/%s' % (number, user))
+        number += 1
+
+    body = '  /n'.join(lines)
 
     return title, body
 
 
-def insert_user_to_userlist(user):
-    users = helpers.load_data('user_list')
-    users.append(user)
-    helpers.write_data('user_list', users)
+def insert_users_to_userlist(new_users):
+    user_list = helpers.load_data('user_list')
+    user_list.extend(new_users)
+    helpers.write_data('user_list', user_list)
 
 
 def process_input():
-    if len(sys.argv) == 2:
-        user = sys.argv[1]
+    if len(sys.argv) >= 2:
+        users = sys.argv[1:]
     else:
-        user = input('Enter user to re-add: ')
+        users = input('Enter users to re-add, separated by spaces: ').split()
 
-    main(user)
+    main(users)
 
 
 if __name__ == '__main__':
