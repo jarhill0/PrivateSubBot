@@ -119,8 +119,8 @@ def flair_and_remove(users, reddit):
             try:
                 reddit.subreddit(config.target_subreddit).flair.set(
                     redditor=user,
-                    text='Removed',
-                    css_class='kicked')
+                    text=config.text_removed,
+                    css_class=config.flair_removed)
                 reddit.subreddit(config.target_subreddit).contributor.remove(user)
             except praw.exceptions.APIException:
                 # Deleted user, most likely

@@ -46,6 +46,10 @@ distinguish_log = True
 flair_normal = 'number'
 # Flair CSS class that new users should have
 flair_new = 'numbernew'
+# Flair CSS class that removed users should have
+flair_removed = 'kicked'
+# Flair text for removed users
+text_removed = 'Removed'
 # Special flair CSS classes for users with specific numbers. The number is the number that gets a special CSS
 # class, and the string is the name of that CSS class. The examples (0 and -1) will not have any effect.
 special_flairs = {0: 'black',
