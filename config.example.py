@@ -4,6 +4,8 @@
 # the bot relies on css flair classes in your target subreddit matching flair_normal and flair_new and matching
 # css classes for any classes in special_flairs.
 
+# RENAME THIS FILE TO config.py OR ELSE THE BOT WILL NOT RUN
+
 # Username of your bot. Configuration should be in praw.ini under the same name.
 bot_username = 'My_bot'
 # Name of the private subreddit the bot should operate on

@@ -4,11 +4,16 @@ import time
 import praw
 import prawcore
 
-import config
 import daily
 import helpers
 import post_gist
 import updates
+
+try:
+    import config
+except ModuleNotFoundError:
+    print('config.py not found. Rename config.example.py to config.py after configuration.')
+    sys.exit(1)
 
 
 def main():
