@@ -7,7 +7,7 @@ import updates
 
 try:
     import config
-except ModuleNotFoundError:
+except (ImportError, ModuleNotFoundError):
     print('config.py not found. Rename config.example.py to config.py after configuration.')
     sys.exit(1)
 
@@ -62,6 +62,7 @@ def main():
     helpers.write_data('stats', stats)
     helpers.write_data('user_list', new_users)
     helpers.write_data('participated', [])
+
 
 if __name__ == '__main__':
     main()

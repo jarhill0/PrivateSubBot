@@ -1,7 +1,13 @@
+import sys
 import time
 
-import config
 import helpers
+
+try:
+    import config
+except (ImportError, ModuleNotFoundError):
+    print('config.py not found. Rename config.example.py to config.py after configuration.')
+    sys.exit(1)
 
 
 def main():

@@ -11,7 +11,7 @@ import updates
 
 try:
     import config
-except ModuleNotFoundError:
+except (ImportError, ModuleNotFoundError):
     print('config.py not found. Rename config.example.py to config.py after configuration.')
     sys.exit(1)
 
