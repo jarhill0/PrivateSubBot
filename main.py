@@ -122,7 +122,7 @@ def flair_and_remove(users, reddit):
                     text=config.text_removed,
                     css_class=config.flair_removed)
                 reddit.subreddit(config.target_subreddit).contributor.remove(user)
-            except praw.exceptions.APIException:
+            except (praw.exceptions.APIException, prawcore.exceptions.BadRequest):
                 # Deleted user, most likely
                 pass
         else:
@@ -139,7 +139,7 @@ def flair_users(users, reddit, default_flair_class, number_adjustment=0):
                     redditor=name,
                     text='#{}'.format(i),
                     css_class=flair_class)
-            except praw.exceptions.APIException:
+            except (praw.exceptions.APIException, prawcore.exceptions.BadRequest):
                 # Deleted user, most likely
                 pass
         else:
