@@ -10,6 +10,8 @@
 bot_username = 'My_bot'
 # Name of the private subreddit the bot should operate on
 target_subreddit = 'My_subreddit'
+# Reddit user-agent
+user_agent = 'script:jarhill0.privatesubmanager:v1.0'
 
 #
 

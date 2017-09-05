@@ -12,7 +12,7 @@ def date_string():
 
 
 def initialize_reddit():
-    return praw.Reddit(config.bot_username, user_agent='PrivateSubManager')
+    return praw.Reddit(config.bot_username, user_agent=config.user_agent)
 
 
 def load_data(name):
