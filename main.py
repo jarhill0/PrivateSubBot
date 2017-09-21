@@ -41,18 +41,20 @@ def main():
     new_users, new_user_urls = get_new_users(reddit, max(min(len(not_participated), 25), 10), updated_list)
     helpers.write_log_trash('New users {}'.format(helpers.date_string()), new_users)
 
-    post_text = build_removed_text(user_list, not_participated) + \
-                '\n\n' + build_new_text(new_users, len(updated_list) + 1)
+    post_text_lines = [build_removed_text(user_list, not_participated), '\n',
+                       build_new_text(new_users, len(updated_list) + 1), '\n']
 
     if config.entry_comments:
-        post_text += '\n\n[Comments for entry]({})'.format(build_and_post_gist(new_users, new_user_urls))
+        post_text_lines.append('\n[Comments for entry]({})'.format(build_and_post_gist(new_users, new_user_urls)))
     if config.stats_section:
-        post_text += '\n\n# Info:\n\n'
-        post_text += '- {} users kicked\n'.format(len(not_participated))
-        post_text += '- {} users added\n'.format(len(new_users))
+        post_text_lines.append('\n# Info:\n')
+        post_text_lines.append('- {} users kicked'.format(len(not_participated)))
+        post_text_lines.append('- {} users added'.format(len(new_users)))
         diff = len(new_users) - len(not_participated)
         change = '+{}'.format(diff) if diff >= 0 else str(diff)
-        post_text += '- Membercap: {} ({})'.format((len(updated_list) + len(new_users)), change)
+        post_text_lines.append('- Membercap: {} ({})'.format((len(updated_list) + len(new_users)), change))
+
+    post_text = '\n'.join(post_text_lines)
 
     title = config.main_log_title
     if config.title_date:
@@ -89,27 +91,31 @@ def add_users(users, reddit):
 
 
 def build_and_post_gist(users, urls):
-    gist_body = '# Comments for entry\n\n'
+    gist_lines = ['# Comments for entry', '\n']
     for user, url in zip(users, urls):
-        gist_body += '{}: {}  \n'.format(user, url)
+        gist_lines.append('{}: {}  '.format(user, url))
+    gist_body = '\n'.join(gist_lines)
     return post_gist.make_gist(gist_body)
 
 
 def build_new_text(new_users, starting_index):
     index = starting_index
-    text = '# New users\n\n'
+    lines = ['# New users\n']
 
     for user in new_users:
-        text += '- #{} /u/{}\n'.format(index, user)
+        lines.append('- #{} /u/{}'.format(index, user))
         index += 1
 
+    text = '\n'.join(lines)
     return text
 
 
 def build_removed_text(user_list, removed):
-    text = '# Users removed\n\n'
+    lines = ['# Users removed\n']
     for user in removed:
-        text += '- #{} /u/{}\n'.format(user_list.index(user) + 1, user)
+        lines.append('- #{} /u/{}'.format(user_list.index(user) + 1, user))
+
+    text = '\n'.join(lines)
     return text
 
 
