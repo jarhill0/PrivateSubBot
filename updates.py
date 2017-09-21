@@ -3,6 +3,7 @@ import os
 import random
 
 import config
+
 import helpers
 
 
@@ -26,13 +27,13 @@ def update_sidebar(user_list):
     with open(path_2, 'r') as f:
         sidebar_2 = f.read()
 
-    sidebar = sidebar_1
-    sidebar += 'Number | User\n---|---\n'
-
+    sidebar_rows = [sidebar_1, '\n']
+    sidebar_rows.append('Number | User\n---|---')
     for i, user in enumerate(user_list):
-        sidebar += '{} | /u/{}\n'.format(i + 1, user)
+        sidebar_rows.append('{} | /u/{}'.format(i + 1, user))
+    sidebar_rows.append(sidebar_2)
 
-    sidebar += sidebar_2
+    sidebar = '\n'.join(sidebar_rows)
 
     if not config.testing:
         reddit = helpers.initialize_reddit()
