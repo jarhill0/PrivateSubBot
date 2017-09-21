@@ -29,16 +29,19 @@ def main():
     new_users, new_user_urls = daddy.get_new_users(reddit, 50, [])
     helpers.write_log_trash('New users {}'.format(helpers.date_string()), new_users)
 
-    post_text = daddy.build_new_text(new_users, 1)
+    post_text_items = [daddy.build_new_text(new_users, 1), '\n']
 
     if config.entry_comments:
-        post_text += '\n\n[Comments for entry]({})'.format(daddy.build_and_post_gist(new_users, new_user_urls))
+        post_text_items.append('[Comments for entry]({})'.format(daddy.build_and_post_gist(new_users,
+                                                                                           new_user_urls)))
     if config.stats_section:
-        post_text += '\n\n# Info:\n\n'
-        post_text += '- {} users added\n'.format(len(new_users))
+        post_text_items.append('# Info:\n\n')
+        post_text_items.append('- {} users added'.format(len(new_users)))
         diff = len(new_users)
         change = '+{}'.format(diff) if diff >= 0 else str(diff)
-        post_text += '- Membercap: {} ({})'.format(len(new_users), change)
+        post_text_items.append('- Membercap: {} ({})'.format(len(new_users), change))
+
+    post_text = '\n'.join(post_text_items)
 
     title = config.main_log_title
     if config.title_date:
