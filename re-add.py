@@ -45,7 +45,7 @@ def build_post(new_users, number):
         diff = len(new_users)
         lines.append('\n# Info:\n\n- 0 users kicked\n- {} users added\n- Membercap: {} (+{})'.format(diff, cap, diff))
 
-    body = '  /n'.join(lines)
+    body = '  \n'.join(lines)
 
     return title, body
 
