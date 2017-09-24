@@ -40,6 +40,11 @@ def build_post(new_users, number):
         lines.append('- #{} /u/{}'.format(number, user))
         number += 1
 
+    if config.stats_section:
+        cap = number - 1
+        diff = len(new_users)
+        lines.append('\n# Info:\n\n- 0 users kicked\n- {} users added\n- Membercap: {} (+{})'.format(diff, cap, diff))
+
     body = '  /n'.join(lines)
 
     return title, body
