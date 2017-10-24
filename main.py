@@ -155,7 +155,7 @@ def flair_users(users, reddit, default_flair_class, number_adjustment=0):
 def get_new_users(reddit, number, current_users):
     raw_new_users = []
     for comment in reddit.subreddit('all').comments(limit=number + 10):
-        raw_new_users.append((comment.author.name, 'https://reddit.com' + comment.permalink(fast=True)))
+        raw_new_users.append((comment.author.name, 'https://reddit.com' + comment.permalink))
     new_users = []
     new_user_urls = []
     while len(new_users) < number:
