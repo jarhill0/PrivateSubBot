@@ -1,10 +1,12 @@
 import json
 import os
+import sys
 import time
-
-import praw
+import traceback
 
 import config
+import praw
+import prawcore
 
 
 def date_string():
@@ -12,7 +14,14 @@ def date_string():
 
 
 def initialize_reddit():
-    return praw.Reddit(config.bot_username, user_agent=config.user_agent)
+    reddit = praw.Reddit(config.bot_username, user_agent=config.user_agent)
+    try:
+        reddit.user.me()
+    except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
+        err = traceback.format_exc() + '\n'
+        write_log_trash('Could not initialize Reddit {}'.format(date_string()), err)
+        sys.exit(1)
+    return reddit
 
 
 def load_data(name):
@@ -24,14 +33,20 @@ def load_data(name):
 
 def write_data(name, data):
     filepath = os.path.join(folder_path(), 'data', '{}.json'.format(name))
-    with open(filepath, 'w') as f:
-        json.dump(data, f)
+    with open(filepath, 'a') as f:
+        if isinstance(str, data):
+            f.write(data)
+        else:
+            json.dump(data, f)
 
 
 def write_log_trash(name, data):
     filepath = os.path.join(folder_path(), 'log_trash', '{}.json'.format(name))
-    with open(filepath, 'w') as f:
-        json.dump(data, f)
+    with open(filepath, 'a') as f:
+        if isinstance(str, data):
+            f.write(data)
+        else:
+            json.dump(data, f)
 
 
 def folder_path():

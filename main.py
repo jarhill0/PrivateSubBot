@@ -21,7 +21,8 @@ except (ImportError, ModuleNotFoundError):
 def main():
     daily.main()
 
-    reddit = helpers.initialize_reddit()
+    reddit = helpers.initialize_reddit()  # will exit if Reddit isn't properly initialized
+    check_permissions(reddit)  # will check if bot has all needed permissions; exit on failure
     participated = set(helpers.load_data('participated'))
     stats = helpers.load_data('stats')
     user_list = helpers.load_data('user_list')
@@ -87,7 +88,11 @@ def main():
 def add_users(users, reddit):
     for user in users:
         if not config.testing:
-            reddit.subreddit(config.target_subreddit).contributor.add(user)
+            try:
+                reddit.subreddit(config.target_subreddit).contributor.add(user)
+            except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
+                error = traceback.format_exc() + '\n'
+                helpers.write_log_trash('Exception: add_users() {}'.format(helpers.date_string()), error)
         else:
             print('Testing: added {}.'.format(user))
 
@@ -130,7 +135,7 @@ def flair_and_remove(users, reddit):
                     text=config.text_removed,
                     css_class=config.flair_removed)
                 reddit.subreddit(config.target_subreddit).contributor.remove(user)
-            except (praw.exceptions.APIException, prawcore.exceptions.BadRequest):
+            except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
                 # Deleted user, most likely
                 pass
         else:
@@ -147,7 +152,7 @@ def flair_users(users, reddit, default_flair_class, number_adjustment=0):
                     redditor=name,
                     text='#{}'.format(i),
                     css_class=flair_class)
-            except (praw.exceptions.APIException, prawcore.exceptions.BadRequest):
+            except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
                 # Deleted user, most likely
                 pass
         else:
@@ -170,7 +175,7 @@ def get_new_users(reddit, number, current_users):
     new_user_urls = []
     while len(new_users) < number:
         user = raw_new_users.pop()
-        if user[0] not in current_users and user[0] not in config.redditor_blacklist:
+        if user[0] not in current_users and user[0] not in config.redditor_blacklist and valid_user(user[0], reddit):
             new_users.append(user[0])
             new_user_urls.append(user[1])
     return new_users, new_user_urls
@@ -178,14 +183,27 @@ def get_new_users(reddit, number, current_users):
 
 def make_post(title, text, reddit, *, distinguish=config.distinguish_log, sticky=config.sticky_log):
     if not config.testing:
-        new_post = reddit.subreddit(config.target_subreddit).submit(
-            title,
-            selftext=text,
-            send_replies=False)
+        try:
+            new_post = reddit.subreddit(config.target_subreddit).submit(
+                title,
+                selftext=text,
+                send_replies=False)
+        except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
+            error = traceback.format_exc() + '\n'
+            helpers.write_log_trash('Exception: make_post(), submit {}'.format(helpers.date_string()), error)
+            return
         if distinguish:
-            reddit.submission(id=new_post.id).mod.distinguish(how='yes')
+            try:
+                reddit.submission(id=new_post.id).mod.distinguish(how='yes')
+            except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
+                error = traceback.format_exc() + '\n'
+                helpers.write_log_trash('Exception: make_post(), distinguish {}'.format(helpers.date_string()), error)
         if sticky:
-            reddit.submission(id=new_post.id).mod.sticky()
+            try:
+                reddit.submission(id=new_post.id).mod.sticky()
+            except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
+                error = traceback.format_exc() + '\n'
+                helpers.write_log_trash('Exception: make_post(), sticky {}'.format(helpers.date_string()), error)
     else:
         print('Testing: submitted {}:\n\n{}'.format(title, text))
 
@@ -202,23 +220,49 @@ def segregate_users(user_list, participated):
     return new_list, not_participated
 
 
-def valid_user(username, reddit):
-    """Return 1 if user is shadowbanned and 2 if they are deleted; else 0"""
-    user = reddit.redditor(username)
+def valid_user(user, reddit):
+    """Return False if user is banned or deleted; else 0"""
+    if isinstance(user, str):
+        user = reddit.redditor(user)
+    if not isinstance(user, praw.models.reddit.redditor.Redditor):
+        raise TypeError("User should be a str or Redditor.")
     try:
         user.unblock()
     except prawcore.exceptions.BadRequest:
-        return 2
+        return False
     else:
         try:
             user.fullname
         except prawcore.exceptions.NotFound:
-            return 1
+            return False
         else:
-            return 0
+            return True
+
+
+def check_permissions(reddit):
+    try:
+        for m in reddit.subreddit(config.target_subreddit).moderator(reddit.user.me()):
+            my_permissions = m.mod_permissions
+
+    except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
+        err = traceback.format_exc() + '\n'
+        helpers.write_log_trash('check_permissions() {}'.format(helpers.date_string()), err)
+        sys.exit(1)
+
+    perms = ['access' in my_permissions, 'flair' in my_permissions]
+    if config.distinguish_log or config.sticky_log:
+        perms.append('posts' in my_permissions)
+    if config.update_sidebar or config.change_title:
+        perms.append('config' in my_permissions)
+
+    if not all(perms):
+        msg = 'Have: {}\n'.format(my_permissions)
+        helpers.write_log_trash('Insufficient Permissions {}'.format(helpers.date_string()), msg)
+        sys.exit(1)
 
 
 if __name__ == '__main__':
+    # noinspection PyBroadException
     try:
         main()
     except:
