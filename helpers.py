@@ -33,7 +33,7 @@ def load_data(name):
 
 def write_data(name, data):
     filepath = os.path.join(folder_path(), 'data', '{}.json'.format(name))
-    with open(filepath, 'a') as f:
+    with open(filepath, 'w') as f:  # will not stack
         if isinstance(data, str):
             f.write(data)
         else:
@@ -42,7 +42,7 @@ def write_data(name, data):
 
 def write_log_trash(name, data):
     filepath = os.path.join(folder_path(), 'log_trash', '{}.json'.format(name))
-    with open(filepath, 'a') as f:
+    with open(filepath, 'a') as f:  # will stack if there is more than one message per name
         if isinstance(data, str):
             f.write(data)
         else:
