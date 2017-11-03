@@ -16,7 +16,7 @@ def process_input():
         count = int(sys.argv[1])
     else:
         count = int(input(
-            'Keep in mind that all users will be flaired as if they are not new. How many users should be re-flaired? '))
+            'All users will be flaired as if they are not new. How many users should be re-flaired? '))
     re_flair(count)
 
 

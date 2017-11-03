@@ -249,6 +249,7 @@ def check_permissions(reddit):
         helpers.write_log_trash('check_permissions() {}'.format(helpers.date_string()), err)
         sys.exit(1)
 
+    # noinspection PyUnboundLocalVariable
     perms = ['access' in my_permissions, 'flair' in my_permissions]
     if config.distinguish_log or config.sticky_log:
         perms.append('posts' in my_permissions)

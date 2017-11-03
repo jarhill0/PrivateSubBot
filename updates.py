@@ -27,8 +27,7 @@ def update_sidebar(user_list):
     with open(path_2, 'r') as f:
         sidebar_2 = f.read()
 
-    sidebar_rows = [sidebar_1, '\n']
-    sidebar_rows.append('Number | User\n---|---')
+    sidebar_rows = [sidebar_1, '\n', 'Number | User\n---|---']
     for i, user in enumerate(user_list):
         sidebar_rows.append('{} | /u/{}'.format(i + 1, user))
     sidebar_rows.append(sidebar_2)
