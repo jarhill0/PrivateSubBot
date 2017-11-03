@@ -1,5 +1,7 @@
+import os
 import sys
 import time
+import traceback
 
 import praw
 import prawcore
@@ -217,4 +219,8 @@ def valid_user(username, reddit):
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except:
+        with open(os.path.join(helpers.folder_path(), 'log_trash', 'ERROR {}'.format(helpers.date_string())), 'w') as f:
+            traceback.print_exc(file=f)
