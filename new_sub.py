@@ -1,3 +1,4 @@
+import config
 import helpers
 import main
 import updates
