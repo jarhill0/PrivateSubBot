@@ -256,7 +256,7 @@ def check_permissions(reddit):
     if config.update_sidebar or config.change_title:
         perms.append('config' in my_permissions)
 
-    if (not all(perms)) or 'all' in perms:
+    if (not all(perms)) or (not 'all' in perms):
         msg = 'Have: {}\n'.format(my_permissions)
         helpers.write_log_trash('Insufficient Permissions {}'.format(helpers.date_string()), msg)
         sys.exit(1)
