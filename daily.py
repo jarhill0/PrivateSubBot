@@ -46,8 +46,9 @@ def get_participants(reddit, last_check):
             old_comments = True
             break
 
-    if not old_comments:
-        raise Exception('Not all old comments were retrieved.')
+    if not old_comments and '--ignore-old-comments-warning' not in sys.argv:
+        raise Exception('Not all old comments were retrieved. Run again with --ignore-old-comments-warning to '
+                        'suppress.')
 
     return participated
 
