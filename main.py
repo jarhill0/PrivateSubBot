@@ -1,4 +1,5 @@
 import os
+import random
 import sys
 import time
 import traceback
@@ -20,6 +21,9 @@ except (ImportError, ModuleNotFoundError):
 
 def main():
     daily.main()
+
+    if config.delay:
+        time.sleep(random.randrange(0, config.max_delay * 60))
 
     reddit = helpers.initialize_reddit()  # will exit if Reddit isn't properly initialized
     check_permissions(reddit)  # will check if bot has all needed permissions; exit on failure

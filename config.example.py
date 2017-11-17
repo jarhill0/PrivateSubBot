@@ -72,3 +72,10 @@ sidebar_text_paths = (('text_values', 'sidebar part 1.txt'), ('text_values', 'si
 change_title = False
 # Path to a json list of titles. Only necessary if change_title is True.
 titles_path = ('text_values', 'titles.json')
+
+#
+
+# Set to True to enable a random delay at the beginning of main runs.
+delay = False
+# Maximum delay in minutes
+max_delay = 15
