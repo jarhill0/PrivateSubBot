@@ -11,6 +11,15 @@ def main(new_users):
 
     user_list = helpers.load_data('user_list')
 
+    for u in new_users:
+        if u in user_list:
+            helpers.write_log_trash('Try to re-add existing user {}'.format(helpers.date_string()), u)
+            new_users.remove(u)
+
+    if not new_users:
+        helpers.write_log_trash('All re-adds already on the memberlist {}'.format(helpers.date_string()), new_users)
+        sys.exit(1)
+
     daddy.add_users(new_users, reddit)
     daddy.flair_users(new_users, reddit, config.flair_normal, number_adjustment=len(user_list))
 
