@@ -34,7 +34,7 @@ def get_participants(reddit, last_check):
             # More than likely a deleted user
             pass
 
-    for comment in reddit.subreddit(config.target_subreddit).comments(limit=1000):
+    for comment in reddit.subreddit(config.target_subreddit).comments(limit=None):
 
         if comment.created_utc > last_check:  # perplexingly, created_utc returns the creation time in local time
             try:
