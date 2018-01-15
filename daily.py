@@ -1,6 +1,7 @@
 import sys
 import time
 
+import forward_messages
 import helpers
 
 try:
@@ -11,6 +12,9 @@ except (ImportError, ModuleNotFoundError):
 
 
 def main():
+    if config.forward_user:
+        forward_messages.forward(config.forward_user)
+
     reddit = helpers.initialize_reddit()
     participated = set(helpers.load_data('participated'))
     stats = helpers.load_data('stats')

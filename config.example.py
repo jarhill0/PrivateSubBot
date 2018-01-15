@@ -21,6 +21,11 @@ testing = False
 
 #
 
+# Set to a username to forward all messages to that user at startup. Leave empty to not.
+forward_user = ''
+
+#
+
 # List users in the format ['username', 'otherUsername'] to blacklist them from being selected and added. Set to []
 # to blacklist nobody
 redditor_blacklist = ['AutoModerator', 'ImagesOfNetwork']
