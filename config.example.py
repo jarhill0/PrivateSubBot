@@ -39,7 +39,9 @@ title_number = False
 # Set to True to include a date in thread titles
 title_date = True
 # Set to True to post a list of URLs of comments that users were selected for in the post body
-entry_comments = True
+entry_comments = False
+# Github credentials. Required if entry_comments is True.
+github = ('username', 'password')
 # Set to True to post a section of numbers about user cap size in the post body
 stats_section = True
 # Set to True to sticky the post

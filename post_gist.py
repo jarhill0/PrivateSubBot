@@ -2,9 +2,12 @@ import json
 
 import requests
 
+from config import github
+
 
 def make_gist(contents):
     r = requests.post('https://api.github.com/gists',
+                      auth=github,
                       data=json.dumps({
                           'description': 'Comments for entry.',
                           'public': False,
