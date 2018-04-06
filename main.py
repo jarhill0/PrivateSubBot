@@ -271,5 +271,5 @@ if __name__ == '__main__':
     try:
         main()
     except:
-        with open(os.path.join(helpers.folder_path(), 'log_trash', 'ERROR {}'.format(helpers.date_string())), 'w') as f:
+        with open(os.path.join(helpers.folder_path(), 'log_trash', 'ERROR {}'.format(helpers.date_string())), 'a') as f:
             traceback.print_exc(file=f)
