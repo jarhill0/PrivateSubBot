@@ -27,11 +27,14 @@ def main():
 
 
 def get_participants(reddit, last_check):
-    now = time.time()
     participated = set()
     old_comments = False
+    old_submissions = False
 
-    for submission in reddit.subreddit(config.target_subreddit).submissions(start=last_check, end=now):
+    for submission in reddit.subreddit(config.target_subreddit).new(limit=None):
+        if submission.created_utc < last_check:
+            old_submissions = True
+            break
         try:
             participated.add(submission.author.name)
         except AttributeError:
@@ -40,17 +43,16 @@ def get_participants(reddit, last_check):
 
     for comment in reddit.subreddit(config.target_subreddit).comments(limit=None):
 
-        if comment.created_utc > last_check:  # perplexingly, created_utc returns the creation time in local time
-            try:
-                participated.add(comment.author.name)
-            except AttributeError:
-                # More than likely a deleted user
-                pass
-        else:
+        if comment.created_utc < last_check:  # perplexingly, created_utc returns the creation time in local time
             old_comments = True
             break
+        try:
+            participated.add(comment.author.name)
+        except AttributeError:
+            # More than likely a deleted user
+            pass
 
-    if not old_comments and '--ignore-old-comments-warning' not in sys.argv:
+    if (not old_comments or not old_submissions) and '--ignore-old-comments-warning' not in sys.argv:
         raise Exception('Not all old comments were retrieved. Run again with --ignore-old-comments-warning to '
                         'suppress.')
 
