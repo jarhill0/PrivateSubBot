@@ -114,7 +114,7 @@ def build_new_text(new_users, starting_index):
     lines = ['# New users\n']
 
     for user in new_users:
-        lines.append('- #{} /u/{}'.format(index, user))
+        lines.append('- \\#{} /u/{}'.format(index, user))
         index += 1
 
     text = '\n'.join(lines)
@@ -124,7 +124,7 @@ def build_new_text(new_users, starting_index):
 def build_removed_text(user_list, removed):
     lines = ['# Users removed\n']
     for user in removed:
-        lines.append('- #{} /u/{}'.format(user_list.index(user) + 1, user))
+        lines.append('- \\#{} /u/{}'.format(user_list.index(user) + 1, user))
 
     text = '\n'.join(lines)
     return text
