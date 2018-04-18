@@ -46,6 +46,10 @@ def main():
     flair_users(updated_list, reddit, config.flair_normal)
 
     saved_users, saved_urls = check_saved_users()
+    for i in range(len(saved_users)):
+        if not valid_user(saved_users[i], reddit):
+            del saved_users[i]
+            del saved_urls[i]
     helpers.delete_datafile('potential_adds')
     total_needed_users = max(min(len(not_participated), 25), 10)
     num_still_needed_users = max(total_needed_users - len(saved_users), 0)
