@@ -56,6 +56,10 @@ def main():
     new_users, new_user_urls = get_new_users(reddit, num_still_needed_users, updated_list)
     new_users = saved_users + new_users
     new_user_urls = saved_urls + new_user_urls
+    new_users, new_user_urls = hack_shuffle(new_users, new_user_urls)
+    new_users = new_users[:total_needed_users]
+    new_user_urls = new_user_urls[:total_needed_users]
+
     helpers.write_log_trash('New users {}'.format(helpers.date_string()), new_users)
 
     post_text_lines = [build_removed_text(user_list, not_participated), '\n',
@@ -97,6 +101,13 @@ def main():
     helpers.write_data('stats', stats)
     helpers.write_data('user_list', updated_list_copy)
     helpers.write_data('participated', [])
+
+
+def hack_shuffle(a, b):
+    """This codebase is a mess. Let's shuffle two lists but keep them in sync."""
+    s = list(zip(a, b))
+    random.shuffle(s)
+    return [p[0] for p in s], [p[1] for p in s]
 
 
 def add_users(users, reddit):
