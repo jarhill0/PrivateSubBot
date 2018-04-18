@@ -4,9 +4,10 @@ import sys
 import time
 import traceback
 
-import config
 import praw
 import prawcore
+
+import config
 
 
 def date_string():
@@ -24,11 +25,13 @@ def initialize_reddit():
     return reddit
 
 
-def load_data(name):
+def load_data(name, default=None):
     filepath = os.path.join(folder_path(), 'data', '{}.json'.format(name))
-    with open(filepath, 'r') as f:
-        output = json.load(f)
-    return output
+    try:
+        with open(filepath, 'r') as f:
+            return json.load(f)
+    except (IOError, ValueError):
+        return default
 
 
 def write_data(name, data):
@@ -38,6 +41,11 @@ def write_data(name, data):
             f.write(data)
         else:
             json.dump(data, f)
+
+
+def delete_datafile(name):
+    filepath = os.path.join(folder_path(), 'data', '{}.json'.format(name))
+    os.remove(filepath)
 
 
 def write_log_trash(name, data):

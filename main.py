@@ -45,7 +45,13 @@ def main():
     flair_and_remove(not_participated, reddit)
     flair_users(updated_list, reddit, config.flair_normal)
 
-    new_users, new_user_urls = get_new_users(reddit, max(min(len(not_participated), 25), 10), updated_list)
+    saved_users, saved_urls = check_saved_users()
+    helpers.delete_datafile('potential_adds')
+    total_needed_users = max(min(len(not_participated), 25), 10)
+    num_still_needed_users = max(total_needed_users - len(saved_users), 0)
+    new_users, new_user_urls = get_new_users(reddit, num_still_needed_users, updated_list)
+    new_users = saved_users + new_users
+    new_user_urls = saved_urls + new_user_urls
     helpers.write_log_trash('New users {}'.format(helpers.date_string()), new_users)
 
     post_text_lines = [build_removed_text(user_list, not_participated), '\n',
@@ -171,17 +177,23 @@ def flair_users(users, reddit, default_flair_class, number_adjustment=0):
         print('Testing: Flaired {}.'.format(flair_list))
 
 
+def check_saved_users():
+    potential_adds = helpers.load_data('potential_adds')
+    if potential_adds:
+        return potential_adds['users'], potential_adds['urls']
+    return [], []
+
+
 def get_new_users(reddit, number, current_users):
-    raw_new_users = []
-    for comment in reddit.subreddit('all').comments(limit=number + 10):
-        raw_new_users.append((comment.author.name, 'https://reddit.com' + comment.permalink))
+    comments = list(reddit.subreddit('all').comments(limit=number + 10))
     new_users = []
     new_user_urls = []
     while len(new_users) < number:
-        user = raw_new_users.pop()
-        if user[0] not in current_users and user[0] not in config.redditor_blacklist and valid_user(user[0], reddit):
-            new_users.append(user[0])
-            new_user_urls.append(user[1])
+        comment = comments.pop()
+        author = comment.author
+        if author not in current_users and author not in config.redditor_blacklist and valid_user(author, reddit):
+            new_users.append(author.name)
+            new_user_urls.append(comment.permalink)
     return new_users, new_user_urls
 
 
@@ -225,7 +237,7 @@ def segregate_users(user_list, participated):
 
 
 def valid_user(user, reddit):
-    """Return False if user is banned or deleted; else 0"""
+    """Return False if user is banned or deleted"""
     if isinstance(user, str):
         user = reddit.redditor(user)
     if not isinstance(user, praw.models.reddit.redditor.Redditor):
@@ -272,4 +284,5 @@ if __name__ == '__main__':
         main()
     except:
         with open(os.path.join(helpers.folder_path(), 'log_trash', 'ERROR {}'.format(helpers.date_string())), 'a') as f:
+            traceback.print_exc()
             traceback.print_exc(file=f)

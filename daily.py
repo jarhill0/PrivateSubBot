@@ -43,7 +43,7 @@ def get_participants(reddit, last_check):
 
     for comment in reddit.subreddit(config.target_subreddit).comments(limit=None):
 
-        if comment.created_utc < last_check:  # perplexingly, created_utc returns the creation time in local time
+        if comment.created_utc < last_check:
             old_comments = True
             break
         try:
