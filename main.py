@@ -46,16 +46,19 @@ def main():
     flair_users(updated_list, reddit, config.flair_normal)
 
     saved_users, saved_urls = check_saved_users()
+    valid_users = []
+    valid_urls = []
     for i in range(len(saved_users)):
-        if not valid_user(saved_users[i], reddit):
-            del saved_users[i]
-            del saved_urls[i]
+        if valid_user(saved_users[i], reddit):
+            valid_users.append(saved_users[i])
+            valid_urls.append(saved_urls[i])
+
     helpers.delete_datafile('potential_adds')
     total_needed_users = max(min(len(not_participated), 25), 10)
-    num_still_needed_users = max(total_needed_users - len(saved_users), 0)
+    num_still_needed_users = max(total_needed_users - len(valid_users), 0)
     new_users, new_user_urls = get_new_users(reddit, num_still_needed_users, updated_list)
-    new_users = saved_users + new_users
-    new_user_urls = saved_urls + new_user_urls
+    new_users = valid_users + new_users
+    new_user_urls = valid_urls + new_user_urls
     new_users, new_user_urls = hack_shuffle(new_users, new_user_urls)
     new_users = new_users[:total_needed_users]
     new_user_urls = new_user_urls[:total_needed_users]
