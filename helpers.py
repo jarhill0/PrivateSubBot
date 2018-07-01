@@ -45,7 +45,10 @@ def write_data(name, data):
 
 def delete_datafile(name):
     filepath = os.path.join(folder_path(), 'data', '{}.json'.format(name))
-    os.remove(filepath)
+    try:
+        os.remove(filepath)
+    except OSError:
+        pass
 
 
 def write_log_trash(name, data):
