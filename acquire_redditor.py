@@ -11,7 +11,7 @@ def acquire():
     while new_users[0] in potential_adds['users']:  # just in case!!
         new_users, new_user_urls = get_new_users(reddit, 1, user_list)
     potential_adds['users'].append(new_users[0])
-    potential_adds['urls'].append('https://reddit.com' + new_user_urls[0])
+    potential_adds['urls'].append(new_user_urls[0])
     write_data('potential_adds', potential_adds)
 
 

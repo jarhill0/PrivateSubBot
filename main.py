@@ -128,7 +128,7 @@ def add_users(users, reddit):
 def build_and_post_gist(users, urls):
     gist_lines = ['# Comments for entry', '\n', 'User|Comment', '---|---']
     for user, url in zip(users, urls):
-        gist_lines.append('/u/{} | {}?context=5  '.format(user, url))
+        gist_lines.append('/u/{} | https://reddit.com{}?context=5  '.format(user, url))
     gist_body = '\n'.join(gist_lines)
     return post_gist.make_gist(gist_body)
 
