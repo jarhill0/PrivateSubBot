@@ -49,7 +49,9 @@ def main():
     valid_users = []
     valid_urls = []
     for i in range(len(saved_users)):
-        if valid_user(saved_users[i], reddit):
+        if valid_user(saved_users[i], reddit) \
+                and saved_users[i] not in valid_users \
+                and saved_users[i] not in updated_list:
             valid_users.append(saved_users[i])
             valid_urls.append(saved_urls[i])
 
