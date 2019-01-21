@@ -3,7 +3,6 @@ import os
 import random
 
 import config
-
 import helpers
 
 
@@ -37,9 +36,20 @@ def update_sidebar(user_list):
     if not config.testing:
         reddit = helpers.initialize_reddit()
         reddit.subreddit(config.target_subreddit).mod.update(description=sidebar)
+        widget = _get_widget(sidebar_1)
+        widget.mod.update(text=sidebar)
     else:
         print('Testing: description updated:\n')
         print(sidebar)
+
+
+def _get_widget(sidebar_contents):
+    reddit = helpers.initialize_reddit()
+    for widget in reddit.subreddit(config.target_subreddit).widgets.sidebar:
+        if widget.kind == 'textarea' and sidebar_contents in widget.text:
+            return widget
+
+    raise ValueError('No widget with specified contents found.')
 
 
 if __name__ == '__main__':
