@@ -187,9 +187,9 @@ def flair_users(users, reddit, default_flair_id, number_adjustment=0):
             try:
                 # will return errors if needed but does not raise exceptions for unrecognized users
                 reddit.subreddit(config.target_subreddit).flair.set(name, text=text, flair_template_id=flair_id)
-            except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
+            except (praw.exceptions.PRAWException, prawcore.PrawcoreException) as exc:
                 # Likely a recoverable error
-                pass
+                print(vars(exc))
         else:
             print('Testing: Flaired {} with {!r} and text {!r}.'.format(name, flair_id, text))
 
