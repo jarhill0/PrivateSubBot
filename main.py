@@ -95,7 +95,7 @@ def main():
         updates.change_title()
 
     add_users(new_users, reddit)
-    flair_users(new_users, reddit, 'numbernew', number_adjustment=len(updated_list))
+    flair_users(new_users, reddit, config.flair_new, number_adjustment=len(updated_list))
 
     updated_list_copy = updated_list[:]
     updated_list_copy.extend(new_users)
@@ -177,24 +177,21 @@ def flair_and_remove(users, reddit):
             print('Testing: Removed {}.'.format(user))
 
 
-def flair_users(users, reddit, default_flair_class, number_adjustment=0):
-    flair_list = []
+def flair_users(users, reddit, default_flair_id, number_adjustment=0):
     for i, name in enumerate(users):
         i += 1 + number_adjustment
         text = '#{}'.format(i)
-        flair_class = config.special_flairs.get(i, default_flair_class)
+        flair_id = config.special_flairs.get(i, default_flair_id)
 
-        flair_list.append({'user': name, 'flair_text': text, 'flair_css_class': flair_class})
-
-    if not config.testing:
-        try:
-            # will return errors if needed but does not raise exceptions for unrecognized users
-            reddit.subreddit(config.target_subreddit).flair.update(flair_list)
-        except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
-            # Likely a recoverable error
-            pass
-    else:
-        print('Testing: Flaired {}.'.format(flair_list))
+        if not config.testing:
+            try:
+                # will return errors if needed but does not raise exceptions for unrecognized users
+                reddit.subreddit(config.target_subreddit).flair.set(name, text=text, flair_template_id=flair_id)
+            except (praw.exceptions.PRAWException, prawcore.PrawcoreException):
+                # Likely a recoverable error
+                pass
+        else:
+            print('Testing: Flaired {} with {!r} and text {!r}.'.format(name, flair_id, text))
 
 
 def check_saved_users():
