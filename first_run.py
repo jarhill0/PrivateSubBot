@@ -56,7 +56,7 @@ def main():
         updates.change_title()
 
     daddy.add_users(new_users, reddit)
-    daddy.flair_users(new_users, reddit, 'numbernew')
+    daddy.flair_users(new_users, reddit, config.flair_new)
 
     if config.update_sidebar:
         updates.update_sidebar(new_users)
