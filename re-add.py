@@ -46,7 +46,7 @@ def build_post(new_users, number):
 
     lines = []
     for user in new_users:
-        lines.append('- #{} /u/{}'.format(number, user))
+        lines.append(r'- \#{} /u/{}'.format(number, user))
         number += 1
 
     if config.stats_section:
