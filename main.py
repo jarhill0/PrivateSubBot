@@ -71,7 +71,10 @@ def main():
                        build_new_text(new_users, len(updated_list) + 1), '\n']
 
     if config.entry_comments:
-        post_text_lines.append('\n[Comments for entry]({})'.format(build_and_post_gist(new_users, new_user_urls)))
+        try:
+            post_text_lines.append('\n[Comments for entry]({})'.format(build_and_post_gist(new_users, new_user_urls)))
+        except Exception:  # can fail!
+            pass  # lol
     if config.stats_section:
         post_text_lines.append('\n# Info:\n')
         post_text_lines.append('- {} users kicked'.format(len(not_participated)))
