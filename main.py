@@ -212,7 +212,10 @@ def get_new_users(reddit, number, current_users):
     while len(new_users) < number:
         comment = comments.pop()
         author = comment.author
-        if author not in current_users and author not in config.redditor_blacklist and valid_user(author, reddit):
+        if author not in current_users and \
+                author not in config.redditor_blacklist and \
+                valid_user(author, reddit) and \
+                author not in new_users:
             new_users.append(author.name)
             new_user_urls.append(comment.permalink)
     return new_users, new_user_urls
