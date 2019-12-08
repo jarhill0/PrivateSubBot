@@ -3,8 +3,8 @@ from praw.models import Message
 import config
 import helpers
 
-FORWARD_SUBJECT = '{subject!r} from {author}'
-FORWARD_MESSAGE = 'New message from /u/{author} re {subject!r}:\n\n---\n\n{body}'
+FORWARD_SUBJECT = "{subject!r} from {author}"
+FORWARD_MESSAGE = "New message from /u/{author} re {subject!r}:\n\n---\n\n{body}"
 
 
 def forward(to):
@@ -22,7 +22,9 @@ def forward(to):
             subject = item.subject
 
             forward_subject = FORWARD_SUBJECT.format(subject=subject, author=author)
-            forward_message = FORWARD_MESSAGE.format(author=author, subject=subject, body=body)
+            forward_message = FORWARD_MESSAGE.format(
+                author=author, subject=subject, body=body
+            )
 
             if not config.testing:
                 try:
@@ -30,6 +32,13 @@ def forward(to):
                 except Exception:
                     # just in case, for now.
                     # todo remove this
-                    to.message(subject='New message', message='I have a new message, but something went wrong.')
+                    to.message(
+                        subject="New message",
+                        message="I have a new message, but something went wrong.",
+                    )
             else:
-                print('Messaging {} with subject {!r} and message:\n{}'.format(to, forward_subject, forward_message))
+                print(
+                    "Messaging {} with subject {!r} and message:\n{}".format(
+                        to, forward_subject, forward_message
+                    )
+                )

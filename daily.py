@@ -7,7 +7,9 @@ import helpers
 try:
     import config
 except (ImportError, ModuleNotFoundError):
-    print('config.py not found. Rename config.example.py to config.py after configuration.')
+    print(
+        "config.py not found. Rename config.example.py to config.py after configuration."
+    )
     sys.exit(1)
 
 
@@ -16,14 +18,16 @@ def main():
         forward_messages.forward(config.forward_user)
 
     reddit = helpers.initialize_reddit()
-    participated = set(helpers.load_data('participated'))
-    stats = helpers.load_data('stats')
+    participated = set(helpers.load_data("participated"))
+    stats = helpers.load_data("stats")
 
-    participated = participated.union(get_participants(reddit, stats['last_daily_run']))
+    participated = participated.union(get_participants(reddit, stats["last_daily_run"]))
 
-    helpers.write_data('participated', list(participated))
-    stats['last_daily_run'] = time.time() - 60  # to cover accidental gaps due to execution time
-    helpers.write_data('stats', stats)
+    helpers.write_data("participated", list(participated))
+    stats["last_daily_run"] = (
+        time.time() - 60
+    )  # to cover accidental gaps due to execution time
+    helpers.write_data("stats", stats)
 
 
 def get_participants(reddit, last_check):
@@ -52,12 +56,16 @@ def get_participants(reddit, last_check):
             # More than likely a deleted user
             pass
 
-    if (not old_comments or not old_submissions) and '--ignore-old-comments-warning' not in sys.argv:
-        raise Exception('Not all old comments were retrieved. Run again with --ignore-old-comments-warning to '
-                        'suppress.')
+    if (
+        not old_comments or not old_submissions
+    ) and "--ignore-old-comments-warning" not in sys.argv:
+        raise Exception(
+            "Not all old comments were retrieved. Run again with --ignore-old-comments-warning to "
+            "suppress."
+        )
 
     return participated
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
