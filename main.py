@@ -243,11 +243,11 @@ def check_saved_users():
 
 
 def get_new_users(reddit, number, current_users):
-    comments = list(reddit.subreddit("all").comments(limit=number + 10))
+    comments = reddit.subreddit("all").comments(limit=None)
     new_users = []
     new_user_urls = []
     while len(new_users) < number:
-        comment = comments.pop()
+        comment = next(comments)
         author = comment.author
         if (
             author not in current_users
