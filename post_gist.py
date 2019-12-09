@@ -2,13 +2,13 @@ import json
 
 import requests
 
-from config import github
+from config import github_token
 
 
 def make_gist(contents):
     r = requests.post(
         "https://api.github.com/gists",
-        auth=github,
+        headers={"Authorization": "token " + github_token},
         data=json.dumps(
             {
                 "description": "Comments for entry.",

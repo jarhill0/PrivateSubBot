@@ -40,8 +40,8 @@ title_number = False
 title_date = True
 # Set to True to post a list of URLs of comments that users were selected for in the post body
 entry_comments = False
-# Github credentials. Required if entry_comments is True.
-github = ("username", "password")
+# Github Personal Access Token. Required if entry_comments is True.
+github_token = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 # Set to True to post a section of numbers about user cap size in the post body
 stats_section = True
 # Set to True to sticky the post
