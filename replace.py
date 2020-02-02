@@ -28,6 +28,10 @@ def replace(old_un, new_un):
             [new_un], reddit, config.flair_normal, number_adjustment=users.index(new_un)
         )
         main.add_users([new_un], reddit)
+        participated = set(helpers.load_data("participated"))
+        if old_un in participated:
+            participated.add(new_un)
+            helpers.write_data("participated", list(participated))
     else:
         print(
             "Flaired and removed /u/{}; Flaired and added /u/{}".format(old_un, new_un)
