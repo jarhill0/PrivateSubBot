@@ -11,17 +11,12 @@ def main(new_users):
 
     user_list = helpers.load_data("user_list")
 
-    for u in new_users:
-        if u in user_list:
-            helpers.write_log_trash(
-                "Try to re-add existing user {}".format(helpers.date_string()), u
-            )
-            new_users.remove(u)
+    new_users = [user for user in new_users if user not in user_list]
 
     if not new_users:
         helpers.write_log_trash(
             "All re-adds already on the memberlist {}".format(helpers.date_string()),
-            new_users,
+            "",
         )
         sys.exit(1)
 
