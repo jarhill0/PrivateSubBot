@@ -47,7 +47,7 @@ def update_sidebar(user_list):
 
     if not config.testing:
         reddit = helpers.initialize_reddit()
-        reddit.subreddit(config.target_subreddit).mod.update(description=sidebar)
+        reddit.subreddit(config.target_subreddit).wiki["config/sidebar"].edit(content=sidebar)
         widget = _get_widget(sidebar_1)
         widget.mod.update(text=sidebar)
     else:
