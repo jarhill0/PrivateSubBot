@@ -299,10 +299,12 @@ def make_post(
 
 
 def segregate_users(user_list, participated):
+    lowered_participated = {username.lower() for username in participated}
+
     not_participated = []
     new_list = []
     for user in user_list:
-        if user in participated:
+        if user.lower() in lowered_participated:
             new_list.append(user)
         else:
             not_participated.append(user)
