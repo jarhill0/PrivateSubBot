@@ -1,5 +1,7 @@
 import sys
 
+from praw.exceptions import RedditAPIException
+
 import config
 import helpers
 import main as daddy
@@ -11,7 +13,7 @@ def main(new_users):
 
     user_list = helpers.load_data("user_list")
 
-    new_users = [user for user in new_users if user not in user_list]
+    new_users = [user for user in canonicalize(reddit, new_users) if user not in user_list]
 
     if not new_users:
         helpers.write_log_trash(
@@ -78,6 +80,19 @@ def process_input():
         users = input("Enter users to re-add, separated by spaces: ").split()
 
     main(users)
+
+
+def canonicalize(reddit, user_list):
+    out = []
+    for user in user_list:
+        redditor = reddit.redditor(user)
+        try:
+            redditor.created_utc # force a fetch
+        except RedditAPIException:
+            pass
+        else:
+            out.append(redditor.name)
+    return out
 
 
 if __name__ == "__main__":
