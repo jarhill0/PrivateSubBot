@@ -325,7 +325,7 @@ def valid_user(user, reddit):
     else:
         try:
             user.fullname
-        except (prawcore.exceptions.NotFound, prawcore.exceptions.ServerError):
+        except (AttributeError, prawcore.exceptions.NotFound, prawcore.exceptions.ServerError):
             return False
         else:
             return True
