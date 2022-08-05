@@ -13,7 +13,9 @@ def main(new_users):
 
     user_list = helpers.load_data("user_list")
 
-    new_users = [user for user in canonicalize(reddit, new_users) if user not in user_list]
+    new_users = [
+        user for user in canonicalize(reddit, new_users) if user not in user_list
+    ]
 
     if not new_users:
         helpers.write_log_trash(
@@ -87,7 +89,7 @@ def canonicalize(reddit, user_list):
     for user in user_list:
         redditor = reddit.redditor(user)
         try:
-            redditor.created_utc # force a fetch
+            redditor.created_utc  # force a fetch
         except RedditAPIException:
             pass
         else:

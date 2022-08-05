@@ -205,7 +205,11 @@ def flair_and_remove(users, reddit):
         if not config.testing:
             try:
                 reddit.subreddit(config.target_subreddit).contributor.remove(user)
-            except (praw.exceptions.PRAWException, prawcore.PrawcoreException, KeyError):
+            except (
+                praw.exceptions.PRAWException,
+                prawcore.PrawcoreException,
+                KeyError,
+            ):
                 # Deleted user, most likely
                 pass
         else:
@@ -325,7 +329,11 @@ def valid_user(user, reddit):
     else:
         try:
             user.fullname
-        except (AttributeError, prawcore.exceptions.NotFound, prawcore.exceptions.ServerError):
+        except (
+            AttributeError,
+            prawcore.exceptions.NotFound,
+            prawcore.exceptions.ServerError,
+        ):
             return False
         else:
             return True
