@@ -128,11 +128,20 @@ def main():
     updated_list_copy.extend(new_users)
     if config.update_sidebar:
         updates.update_sidebar(updated_list_copy)
+    if update_top_sticky():
+        updates.update_top_sticky(updated_list_copy)
 
     stats["last_full_run"] = time.time()
     helpers.write_data("stats", stats)
     helpers.write_data("user_list", updated_list_copy)
     helpers.write_data("participated", [])
+
+
+def update_top_sticky():
+    try:
+        return config.update_top_sticky and bool(config.top_sticky_title)
+    except AttributeError:
+        return False
 
 
 def hack_shuffle(a, b):

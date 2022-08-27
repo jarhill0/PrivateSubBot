@@ -80,6 +80,13 @@ sidebar_text_paths = (
 
 #
 
+# Set to True to update the top sticky with a list of current users.
+update_top_sticky = False
+# Set the title of the top sticky. Top sticky will only be updated if it matches.
+top_sticky_title = ""
+
+#
+
 # Set to True to update the subreddit with a random title once a week.
 change_title = False
 # Path to a json list of titles. Only necessary if change_title is True.

@@ -2,6 +2,8 @@ import json
 import os
 import random
 
+import prawcore
+
 import config
 import helpers
 
@@ -38,12 +40,7 @@ def update_sidebar(user_list):
     with open(path_2, "r") as f:
         sidebar_2 = f.read()
 
-    sidebar_rows = [sidebar_1, "\n", "Number | User\n---|---"]
-    for i, user in enumerate(user_list):
-        sidebar_rows.append("{} | /u/{}".format(i + 1, user))
-    sidebar_rows.append(sidebar_2)
-
-    sidebar = "\n".join(sidebar_rows)
+    sidebar = sidebar_1 + "\n\n" + _user_table(user_list) + "\n\n" + sidebar_2
 
     if not config.testing:
         reddit = helpers.initialize_reddit()
@@ -57,6 +54,41 @@ def update_sidebar(user_list):
         print(sidebar)
 
 
+def _user_table(user_list):
+    rows = ["Number | User\n---|---"]
+    for i, user in enumerate(user_list):
+        rows.append("{} | /u/{}".format(i + 1, user))
+    return "\n".join(rows)
+
+
+def update_top_sticky(user_list):
+    reddit = helpers.initialize_reddit()
+    subreddit = reddit.subreddit(config.target_subreddit)
+    try:
+        top_sticky = subreddit.sticky()
+    except prawcore.NotFound:
+        print("No sticky exists.")
+        return
+
+    if top_sticky.author != reddit.user.me():
+        print("I did not create the sticky.")
+        return
+
+    if top_sticky.title != config.top_sticky_title:
+        print(
+            f"Titles do not match; got {top_sticky.title!r} and expected {config.top_sticky_title!r}."
+        )
+        return
+
+    new_contents = _user_table(user_list)
+
+    if config.testing:
+        print(f"Testing: updating {top_sticky} to the following.")
+        print(new_contents)
+    else:
+        top_sticky.edit(new_contents)
+
+
 def _get_widget(sidebar_contents):
     reddit = helpers.initialize_reddit()
     for widget in reddit.subreddit(config.target_subreddit).widgets.sidebar:
@@ -67,11 +99,13 @@ def _get_widget(sidebar_contents):
 
 
 if __name__ == "__main__":
-    choice = input("Update what? T for title or S for sidebar [T/S]: ")
+    choice = input("Update what? T for title, S for sidebar, or P for sticky [T/S/P]: ")
 
     if choice.lower() == "t":
         change_title()
     elif choice.lower() == "s":
         update_sidebar(helpers.load_data("user_list"))
+    elif choice.lower() == "p":
+        update_top_sticky(helpers.load_data("user_list"))
     else:
         print("Invalid choice. Exiting.")
